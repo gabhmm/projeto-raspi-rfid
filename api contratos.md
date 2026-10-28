@@ -34,7 +34,7 @@ O servidor decide o resultado, grava o evento com o horário dele e devolve a me
 Sem resposta em 2 s → Pi decide pela lista em cache e grava o evento num arquivo local.
 
 ### `GET /api/colaboradores`
-Mesma rota do front. A Pi chama ao ligar e salva em `cache.json`.
+Mesma rota do front. A Pi chama ao ligar e depois a cada 3 minutos para atualizar seu estado local (`cache.json`), incluindo se o colaborador está atualmente na sala (`na_sala`), se já entrou hoje (`entrou_hoje`) e o tempo acumulado no dia (`tempo_hoje_segundos`).
 
 ---
 
@@ -51,7 +51,18 @@ Mesma rota do front. A Pi chama ao ligar e salva em `cache.json`.
 ### `GET /api/colaboradores`
 ```json
 // 200
-[{ "id": 1, "nome": "Ana", "matricula": "01", "tag_uid": "A1B2C3D4", "cargo": "Artist", "acesso_sala": true, "ativo": true }]
+[{
+  "id": 1,
+  "nome": "Ana",
+  "matricula": "01",
+  "tag_uid": "A1B2C3D4",
+  "cargo": "Artist",
+  "acesso_sala": true,
+  "ativo": true,
+  "na_sala": false,
+  "entrou_hoje": true,
+  "tempo_hoje_segundos": 3600
+}]
 ```
 
 ### `POST /api/colaboradores` · `PUT /api/colaboradores/<id>`
@@ -69,7 +80,7 @@ Mesma rota do front. A Pi chama ao ligar e salva em `cache.json`.
 ### `DELETE /api/colaboradores/<id>` → `200`
 
 ### `GET /api/eventos`
-Eventos do dia, mais recentes primeiro. O front monta a tela de logs e a de monitoramento filtrando por `resultado`.
+Eventos do dia (padrão) ou filtrados via query string (`?data=YYYY-MM-DD` ou `?todos=true`), mais recentes primeiro. O front monta a tela de logs e a de monitoramento filtrando por `resultado`.
 ```json
 // 200
 [{ "id": 1, "data_hora": "2026-10-28 19:15:02", "tag_uid": "A1B2C3D4", "nome": "Ana", "resultado": "ENTRADA" }]

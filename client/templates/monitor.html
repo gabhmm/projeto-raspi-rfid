@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monitoramento em Tempo Real — Segurança Privada AAA</title>
+  <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <a href="/monitor" class="navbar-brand">
+      <span class="brand-badge">NDA AAA</span>
+      <span>Painel de Monitoramento — Segurança Privada</span>
+    </a>
+    <div class="navbar-links">
+      <span style="font-size: 0.82rem; color: var(--text-secondary); margin-right: 0.5rem;">
+        <span class="status-dot"></span> Polling 2s (<span id="ultimo-sync">--:--:--</span>)
+      </span>
+      <a href="/monitor" class="nav-link active">🚨 Monitoramento em Tempo Real</a>
+      <a href="/colaboradores" class="nav-link">👥 Colaboradores & Tags</a>
+      <a href="/api/eventos.csv" class="btn btn-secondary btn-sm">📥 Exportar CSV</a>
+      <button onclick="Api.logout()" class="btn btn-danger btn-sm">Sair</button>
+    </div>
+  </nav>
+
+  <main class="container">
+    <!-- Barra de Simulação Rápida de Leitura (POST /api/validar) -->
+    <div class="simulator-bar">
+      <div>
+        <strong style="font-size: 0.92rem;">🍓 Simulador Rápido de Leitura RFID (<code class="mono">POST /api/validar</code>)</strong>
+        <p style="font-size: 0.8rem; color: var(--text-secondary);">
+          Clique em um crachá de teste ou digite uma Tag UID para simular a chamada da Raspberry Pi ao servidor:
+        </p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;">
+        <button class="btn btn-secondary btn-sm" onclick="simularTag('A1B2C3D4')" title="Ana (Autorizada)">
+          🟢 Ana (A1B2C3D4)
+        </button>
+        <button class="btn btn-secondary btn-sm" onclick="simularTag('B2C3D4E5')" title="Bruno (Autorizado)">
+          🟢 Bruno (B2C3D4E5)
+        </button>
+        <button class="btn btn-secondary btn-sm" onclick="simularTag('C3D4E5F6')" title="Carlos (Sem Permissão)">
+          🟠 Carlos s/ Permissão (C3D4E5F6)
+        </button>
+        <button class="btn btn-danger btn-sm" onclick="simularTag('FF998877')" title="Tag Não Cadastrada">
+          🔴 Tag Invasora (FF998877)
+        </button>
+        <form id="form-simular" style="display: inline-flex; gap: 0.4rem;">
+          <input type="text" id="input-tag-simular" placeholder="Outra Tag UID..." style="width: 135px; padding: 0.35rem 0.6rem; font-size: 0.82rem; text-transform: uppercase;" />
+          <button type="submit" class="btn btn-primary btn-sm">Validar</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Feedback da última validação -->
+    <div id="banner-validacao" style="display: none; margin-bottom: 1.2rem; padding: 0.8rem 1.1rem; border-radius: 8px; font-weight: 600;"></div>
+
+    <!-- KPIs Resumo do Dia -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <span class="kpi-label">🟢 Presentes na Sala Agora</span>
+        <span id="kpi-na-sala" class="kpi-value" style="color: var(--success);">0</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">↗️ Entradas Autorizadas (Hoje)</span>
+        <span id="kpi-entradas" class="kpi-value">0</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">↘️ Saídas Registradas (Hoje)</span>
+        <span id="kpi-saidas" class="kpi-value" style="color: var(--info);">0</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">⚠️ Acessos Negados (Hoje)</span>
+        <span id="kpi-negados" class="kpi-value" style="color: var(--warning);">0</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">🚨 Tentativas de Invasão (Hoje)</span>
+        <span id="kpi-invasoes" class="kpi-value" style="color: var(--danger);">0</span>
+      </div>
+    </div>
+
+    <!-- Topo: 1) Colaboradores Dentro da Sala  |  2) Alertas Recentes de Segurança -->
+    <div class="monitor-top-grid">
+      <section class="card">
+        <div class="card-header">
+          <h2 class="card-title">🟢 Colaboradores Atualmente Dentro da Sala</h2>
+          <span id="badge-count-sala" class="badge badge-ENTRADA">0 presentes</span>
+        </div>
+        <div id="lista-na-sala" class="occupant-grid">
+          <div class="empty-state">Sala vazia no momento.</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2 class="card-title">🚨 Alertas Recentes (Invasões & Negados)</h2>
+          <span id="badge-count-alertas" class="badge badge-INVASAO" style="animation: none;">0 alertas</span>
+        </div>
+        <ul id="lista-alertas" class="event-list">
+          <li class="empty-state">Nenhum alerta de segurança registrado hoje.</li>
+        </ul>
+      </section>
+    </div>
+
+    <!-- Quad Grid: Entradas, Saídas, Negados, Invasões -->
+    <div class="monitor-quad-grid">
+      <section class="card">
+        <div class="card-header">
+          <h3 class="card-title">↗️ Últimas Entradas Autorizadas</h3>
+          <span class="badge badge-ENTRADA">ENTRADA</span>
+        </div>
+        <ul id="lista-entradas" class="event-list">
+          <li class="empty-state">Nenhuma entrada registrada hoje.</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h3 class="card-title">↘️ Últimas Saídas Registradas</h3>
+          <span class="badge badge-SAIDA">SAIDA</span>
+        </div>
+        <ul id="lista-saidas" class="event-list">
+          <li class="empty-state">Nenhuma saída registrada hoje.</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h3 class="card-title">⚠️ Tentativas de Colaboradores Não Autorizados</h3>
+          <span class="badge badge-NEGADO">NEGADO</span>
+        </div>
+        <ul id="lista-negados" class="event-list">
+          <li class="empty-state">Nenhuma tentativa negada hoje.</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h3 class="card-title">🚨 Tentativas de Invasão (Tags Desconhecidas)</h3>
+          <span class="badge badge-INVASAO">INVASAO</span>
+        </div>
+        <ul id="lista-invasoes" class="event-list">
+          <li class="empty-state">Nenhuma tentativa de invasão hoje.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/monitor.js"></script>
+</body>
+</html>
