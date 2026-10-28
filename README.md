@@ -9,11 +9,11 @@
 
 | Nome Completo | ID / RM / Matrícula | Função / Responsabilidade no Projeto |
 | :--- | :--- | :--- |
-| **[PREENCHER NOME DO INTEGRANTE 1]** | `[PREENCHER ID 1]` | Backend Flask, Banco de Dados SQLite & API REST |
-| **[PREENCHER NOME DO INTEGRANTE 2]** | `[PREENCHER ID 2]` | Front-end Web (Gerenciamento & Monitoramento em Tempo Real) |
-| **[PREENCHER NOME DO INTEGRANTE 3]** | `[PREENCHER ID 3]` | Sistema Embarcado Raspberry Pi (RFID, Atuadores & Cache Offline) |
-| **[PREENCHER NOME DO INTEGRANTE 4]** | `[PREENCHER ID 4]` | Análise de Dados com Pandas (Jupyter Notebook) & Documentação |
-| **[PREENCHER NOME DO INTEGRANTE 5]** | `[PREENCHER ID 5]` | Integração, Testes & Arquitetura do Sistema |
+| **[Gabriel M Magalhaes]** | `[1137910]` | Backend Flask, Banco de Dados SQLite & API REST |
+| **[Guilherme Matte Embarach]** | `[1137953]` | Backend Flask, Banco de Dados SQLite & API REST |
+| **[Pedro Arthur Silvestri]** | `[1140338]` | Front-end Web (Gerenciamento & Monitoramento em Tempo Real) |
+| **[Brayan Lima]** | `[1132051]` | Sistema Embarcado Raspberry Pi (RFID, Atuadores & Cache Offline) & Documentação |
+| **[Adriano Cesar]** | `[113880]` | Análise de Dados com Pandas (Jupyter Notebook) |
 
 ---
 
