@@ -48,8 +48,8 @@ function renderizarTabela() {
       const badgeSala = c.na_sala
         ? `<span class="badge badge-ENTRADA">🟢 Dentro da Sala</span>`
         : c.entrou_hoje
-        ? `<span style="color: var(--text-secondary); font-size: 0.83rem;">Saiu (Esteve hoje)</span>`
-        : `<span style="color: var(--text-secondary); font-size: 0.83rem;">Não entrou hoje</span>`;
+          ? `<span style="color: var(--text-secondary); font-size: 0.83rem;">Saiu (Esteve hoje)</span>`
+          : `<span style="color: var(--text-secondary); font-size: 0.83rem;">Não entrou hoje</span>`;
 
       return `
         <tr>

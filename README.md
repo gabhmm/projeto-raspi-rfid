@@ -1,19 +1,37 @@
-# 🛡️ Sistema de Controle de Acesso e Monitoramento — Sala Restrita AAA
+# Sistema de Controle de Acesso e Monitoramento — Sala Restrita AAA
 
-Aplicação conectada (**Servidor Flask + SQLite**) e **Cliente Web** (Gerenciamento de Colaboradores/Tags RFID e Painel de Monitoramento em Tempo Real para Segurança Privada), desenvolvida sob a metodologia **Mestre Jedi — Spec-Driven Development**.
+Aplicação conectada (**Servidor Flask + SQLite**) e **Cliente Web** para gerenciamento de colaboradores, tags RFID e monitoramento em tempo real de uma sala restrita, desenvolvida sob a metodologia **Mestre Jedi — Spec-Driven Development**.
 
 ---
 
-## 🚀 Como Executar o Servidor e o Cliente Web
+## Arquitetura do Sistema
 
-### 1. Ativar o ambiente virtual (caso ainda não esteja ativo)
-No PowerShell (Windows):
+```mermaid
+graph LR
+    Raspberry -->|"POST /api/validar"| Servidor
+    Raspberry -->|"GET /api/colaboradores (Boot + 3 min)"| Servidor
+    Admin -->|"Login + CRUD Colaboradores/Tags"| WebClient
+    Seguranca -->|"Monitoramento em Tempo Real (Polling 2s)"| WebClient
+    WebClient -->|"Consome API JSON"| Servidor
+    Pandas -->|"GET /api/eventos.csv"| Servidor
+```
+
+---
+
+## Como Executar o Servidor e o Cliente Web
+
+### 1. Ativar o ambiente virtual
+
+Caso ainda não esteja ativo, no PowerShell (Windows):
+
 ```powershell
 .\.venv\Scripts\Activate.ps1
 ```
 
 ### 2. Iniciar o Servidor Flask
+
 Na raiz do projeto (`raspi-projeto`), execute:
+
 ```powershell
 .\.venv\Scripts\python.exe -m server.app
 ```
@@ -21,6 +39,7 @@ Na raiz do projeto (`raspi-projeto`), execute:
 O servidor iniciará em `http://localhost:5000` (e também escutará na rede local em `0.0.0.0:5000` para que a Raspberry Pi consiga se conectar).
 
 ### 3. Acessar o Sistema no Navegador
+
 - **Tela de Login:** `http://localhost:5000/login`
   - **Usuário padrão:** `admin`
   - **Senha padrão:** `admin`
@@ -30,7 +49,7 @@ O servidor iniciará em `http://localhost:5000` (e também escutará na rede loc
 
 ---
 
-## 🧪 Como Rodar os Testes Automatizados
+## Como Rodar os Testes Automatizados
 
 ```powershell
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
@@ -38,7 +57,7 @@ O servidor iniciará em `http://localhost:5000` (e também escutará na rede loc
 
 ---
 
-## 🔌 Resumo das Rotas da API (`api contratos.md`)
+## Resumo das Rotas da API (`api contratos.md`)
 
 | Origem | Rota | Descrição |
 | :--- | :--- | :--- |
