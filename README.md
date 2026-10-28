@@ -13,7 +13,7 @@
 | **[Guilherme Matte Embarach]** | `[1137953]` | Backend Flask, Banco de Dados SQLite & API REST |
 | **[Pedro Arthur Silvestri]** | `[1140338]` | Front-end Web (Gerenciamento & Monitoramento em Tempo Real) |
 | **[Brayan Lima]** | `[1132051]` | Sistema Embarcado Raspberry Pi (RFID, Atuadores & Cache Offline) & Documentação |
-| **[Adriano Cesar]** | `[113880]` | Análise de Dados com Pandas (Jupyter Notebook) |
+| **[Adriano Cesar]** | `[1138080]` | Análise de Dados com Pandas (Jupyter Notebook) |
 
 ---
 
