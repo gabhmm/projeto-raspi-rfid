@@ -1,11 +1,11 @@
-# 🛡️ Sistema de Controle de Acesso e Monitoramento — Sala Restrita AAA
+#  Sistema de Controle de Acesso e Monitoramento — Sala Restrita AAA
 
 > **Projeto de Solução Distribuída (IoT + Aplicação Web + Análise de Dados)**  
 > Controle de acesso físico e digital por RFID para proteção de propriedade intelectual sob acordo de confidencialidade (**NDA — Non-Disclosure Agreement**).
 
 ---
 
-## 👥 Identificação do Grupo (Integrantes)
+##  Identificação do Grupo (Integrantes)
 
 | Nome Completo | ID / RM / Matrícula | Função / Responsabilidade no Projeto |
 | :--- | :--- | :--- |
@@ -17,7 +17,7 @@
 
 ---
 
-## 🎯 Contexto e Objetivo do Trabalho
+##  Contexto e Objetivo do Trabalho
 
 ### O Problema
 Um estúdio de desenvolvimento de jogos fechou pela primeira vez um contrato de *outsourcing* com uma **publisher AAA** para desenvolver o design de personagens confidenciais que ainda não foram anunciados ao público. Devido a um rigoroso contrato de **NDA (*Non-Disclosure Agreement*)**, qualquer vazamento acarretaria severas penalidades contratuais e financeiras. Para proteger os materiais, o estúdio isolou uma sala física de acesso restrito e rede local controlada.
@@ -27,16 +27,16 @@ Desenvolver uma solução distribuída capaz de controlar o acesso físico à sa
 
 ---
 
-## 🏗️ Arquitetura e Funcionalidades Principais
+##  Arquitetura e Funcionalidades Principais
 
 ```mermaid
 graph LR
-    Pi["🍓 Raspberry Pi + RFID"] -->|POST /api/validar| Server["🖥️ Servidor Flask + SQLite"]
+    Pi["Raspberry Pi + RFID"] -->|POST /api/validar| Server["🖥️ Servidor Flask + SQLite"]
     Pi -->|GET /api/colaboradores (Boot + 3 min)| Server
-    Admin["🛡️ Administrador"] -->|Login + CRUD Colaboradores/Tags| Web["🌐 Interface Web"]
-    Seguranca["🚨 Segurança Privada"] -->|Monitoramento Ao Vivo (Polling 2s)| Web
+    Admin["Administrador"] -->|Login + CRUD Colaboradores/Tags| Web["🌐 Interface Web"]
+    Seguranca[" Segurança Privada"] -->|Monitoramento Ao Vivo (Polling 2s)| Web
     Web -->|API JSON| Server
-    Pandas["📊 Análise Pandas"] -->|GET /api/eventos.csv| Server
+    Pandas["Análise Pandas"] -->|GET /api/eventos.csv| Server
 ```
 
 1. **Aplicação Conectada (`server/`):**
@@ -64,7 +64,7 @@ graph LR
 
 ---
 
-## 📂 Estrutura do Repositório
+## Estrutura do Repositório
 
 ```text
 raspi-projeto/
@@ -89,7 +89,7 @@ raspi-projeto/
 
 ---
 
-## 🚀 Como Executar o Projeto
+## Como Executar o Projeto
 
 ### 1. Configurar e ativar o ambiente virtual
 ```powershell
@@ -114,7 +114,7 @@ O servidor ficará disponível em:
 
 ---
 
-## 🧪 Como Executar os Testes Automatizados e Testar a API
+## Como Executar os Testes Automatizados e Testar a API
 
 Para rodar a suíte de testes automatizados (`unittest`):
 ```powershell
